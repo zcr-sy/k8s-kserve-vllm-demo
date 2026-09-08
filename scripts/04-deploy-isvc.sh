@@ -21,8 +21,8 @@ for i in $(seq 1 30); do   # 最长 ~5 分钟探测
   sleep 10
 done
 
-# raw 模式下 deployment 可用 = pod 就绪 = vLLM /health 通了
-kubectl rollout status deploy/qwen-vllm-predictor-default --timeout=600s
+# raw 模式下 deployment 可用 = pod 就绪 = vLLM /health 通了 (v0.14 资源名无 -default 后缀)
+kubectl rollout status deploy/qwen-vllm-predictor --timeout=600s
 kubectl wait --for=condition=Ready --timeout=300s isvc/qwen-vllm 2>/dev/null || true
 
 kubectl get isvc,pods -A -o wide

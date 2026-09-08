@@ -31,6 +31,6 @@ jobs:
         run: |
           kubectl get isvc,deploy,svc,pods -A -o wide 2>/dev/null || true
           kubectl get isvc qwen-vllm -n default -o yaml 2>/dev/null | head -80 || true
-          kubectl logs deploy/qwen-vllm-predictor-default -n default --tail=40 2>/dev/null || true
+          kubectl logs deploy/qwen-vllm-predictor -n default --tail=40 2>/dev/null || true
           kubectl logs deploy/kserve-controller-manager -n kserve -c manager --tail=60 2>/dev/null || true
           kubectl describe isvc qwen-vllm -n default 2>/dev/null | tail -30 || true

@@ -2,7 +2,8 @@
 # 冒烟测试: port-forward -> OpenAI /v1/chat/completions 真实推理
 set -euxo pipefail
 
-kubectl port-forward svc/qwen-vllm-predictor-default 8000:8000 >/tmp/pf.log 2>&1 &
+# v0.14 raw 模式资源名: <name>-predictor (无 -default 后缀); svc 端口 80 -> 容器 8000
+kubectl port-forward svc/qwen-vllm-predictor 8000:80 >/tmp/pf.log 2>&1 &
 PF_PID=$!
 trap 'kill $PF_PID 2>/dev/null || true' EXIT
 sleep 12

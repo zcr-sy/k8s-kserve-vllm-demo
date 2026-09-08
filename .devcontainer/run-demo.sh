@@ -26,6 +26,6 @@ bash scripts/05-smoke-test.sh
 
 echo "=== [6] 状态汇总 ==="
 kubectl get isvc,deploy,svc,pods -A -o wide 2>/dev/null || true
-kubectl logs deploy/qwen-vllm-predictor-default -n default --tail=20 2>/dev/null || true
+kubectl logs deploy/qwen-vllm-predictor -n default --tail=20 2>/dev/null || true
 
 echo "=== DEMO COMPLETED ==="
