@@ -4,9 +4,9 @@ metadata:
   name: qwen-vllm
   namespace: default
 spec:
+  # v2 协议: /v2/models /v2/health/ready (KServe 语义; v1beta1 里 protocolVersion 是 spec 顶层字段)
+  protocolVersion: v2
   predictor:
-    # v2 协议: /v2/models /v2/health/ready (KServe 服务网格语义)
-    protocolVersion: v2
     containers:
       - name: vllm
         # 统一镜像: GPU/CPU 都可跑, 用 --device cpu 切到 CPU 后端
@@ -43,7 +43,7 @@ spec:
           failureThreshold: 20
         resources:
           requests:
-            cpu: "2"
+            cpu: "1"
             memory: 2Gi
           limits:
             cpu: "4"
