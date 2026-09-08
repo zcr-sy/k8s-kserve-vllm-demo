@@ -4,8 +4,8 @@ metadata:
   name: qwen-vllm
   namespace: default
 spec:
-  # v2 协议: /v2/models /v2/health/ready (KServe v0.14: 顶层字段是 protocolVersions 数组)
-  protocolVersions: [v2]
+  # 自定义容器(containers) + RawDeployment: 不声明协议, KServe 只负责编排 Deployment/Service;
+  # 冒烟测试直接 port-forward 打 vLLM 自带的 OpenAI 端口, 不走 KServe 协议层, 规避 v1/v2 争议
   predictor:
     containers:
       - name: vllm
