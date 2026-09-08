@@ -1,0 +1,14 @@
+{
+  "name": "k8s-kserve-vllm-demo",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/python:1": {}
+  },
+  "postCreateCommand": "bash .devcontainer/run-demo.sh > RESULT.txt 2>&1; git add RESULT.txt; git -c user.name='codespaces-demo' -c user.email='codespaces-demo@users.noreply.github.com' commit -m 'demo result' 2>/dev/null; git push 2>/dev/null; echo POSTCREATE_DONE",
+  "customizations": {
+    "vscode": {
+      "extensions": []
+    }
+  }
+}
