@@ -11,6 +11,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: 00 - Env probe (runner CPU + vLLM CPU image sanity)
+        run: |
+          echo "== runner CPU =="
+          lscpu | grep -E 'Model name|Architecture|^Flags' | head -5 || true
+          echo "== vLLM CPU image import probe =="
+          docker run --rm public.ecr.aws/q9t5s3a7/vllm-cpu-release-repo:v0.9.2 python -c "
+import faulthandler; faulthandler.enable()
+import torch; print('torch', torch.__version__)
+import vllm; print('vllm', vllm.__version__, 'IMPORT OK')
+" || echo "PROBE_EXIT=$?"
+
       - name: 01 - Install kind & kubectl
         run: bash scripts/01-install-tools.sh
 
