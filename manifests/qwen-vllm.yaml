@@ -9,8 +9,8 @@ spec:
   predictor:
     containers:
       - name: vllm
-        # 统一镜像: GPU/CPU 都可跑, 用 --device cpu 切到 CPU 后端
-        image: vllm/vllm-openai:v0.9.2
+        # 官方 CPU 构建 (AWS ECR Public, vLLM 文档指定仓库); 默认 vllm-openai 镜像是 CUDA 专用, --device cpu 会 Failed to infer device type
+        image: public.ecr.aws/q9t5s3a7/vllm-cpu-release-repo:v0.9.2
         args:
           - --model
           - Qwen/Qwen2.5-0.5B-Instruct
