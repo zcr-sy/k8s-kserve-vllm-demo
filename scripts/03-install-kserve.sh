@@ -19,9 +19,10 @@ curl -fL --retry 5 --retry-delay 3 -o /tmp/kserve.yaml \
   "https://github.com/kserve/kserve/releases/download/${KSERVE_VERSION}/kserve.yaml"
 kubectl apply --server-side -f /tmp/kserve.yaml
 
-# 3) 关键: 默认部署模式 = RawDeployment（configmap 名为 inferenceservice-config）
+# 3) 关键: 默认部署模式 = RawDeployment（configmap 名 inferenceservice-config, key=deploy, 值=JSON 字符串）
 kubectl -n kserve patch configmap inferenceservice-config --type merge \
-  -p '{"data":{"inferenceConfig":"{\"deploy\":{\"defaultDeploymentMode\":\"RawDeployment\"}}"}}'
+  -p '{"data":{"deploy":"{\"defaultDeploymentMode\":\"RawDeployment\"}"}}'
+kubectl -n kserve get configmap inferenceservice-config -o yaml | grep -A4 'data:'
 
 kubectl -n kserve rollout status deploy/kserve-controller-manager --timeout=300s
 kubectl -n kserve rollout status deploy/kserve-localmodel-controller-manager --timeout=300s || true
