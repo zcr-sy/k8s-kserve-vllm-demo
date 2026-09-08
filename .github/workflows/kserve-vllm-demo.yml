@@ -1,0 +1,33 @@
+name: kserve-vllm-demo
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 01 - Install kind & kubectl
+        run: bash scripts/01-install-tools.sh
+
+      - name: 02 - Create kind cluster
+        run: bash scripts/02-create-kind.sh
+
+      - name: 03 - Install KServe (RawDeployment, no Istio/Knative)
+        run: bash scripts/03-install-kserve.sh
+
+      - name: 04 - Deploy InferenceService (vLLM + Qwen2.5-0.5B, CPU)
+        run: bash scripts/04-deploy-isvc.sh
+
+      - name: 05 - Smoke test OpenAI API
+        run: bash scripts/05-smoke-test.sh
+
+      - name: 06 - Collect trace
+        if: always()
+        run: |
+          kubectl get isvc,deploy,svc,pods -A -o wide 2>/dev/null || true
+          kubectl logs deploy/qwen-vllm-predictor-default -n default --tail=40 2>/dev/null || true
