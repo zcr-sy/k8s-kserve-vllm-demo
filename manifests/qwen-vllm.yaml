@@ -24,6 +24,10 @@ spec:
         # env:
         #   - name: HF_ENDPOINT
         #     value: https://hf-mirror.com
+        env:
+          # 缩小 KV cache 占用 (GiB), 0.5B 模型 + 2048 长度 1GiB 足够, 防预热阶段 OOM(SIGKILL 137)
+          - name: VLLM_CPU_KVCACHE_SPACE
+            value: "1"
         ports:
           - containerPort: 8000
             protocol: TCP
@@ -47,4 +51,4 @@ spec:
             memory: 2Gi
           limits:
             cpu: "4"
-            memory: 4Gi
+            memory: 8Gi
